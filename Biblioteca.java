@@ -1,5 +1,3 @@
-package Ejercicio_3.Ejercicio3;
-
 public class Biblioteca {
     int sucursal;
 
