@@ -2,14 +2,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Miembro {
-    // Atributos
     private int ID;
     private String nombre;
     private Date fechaP; 
     private Date fechaD; 
     private ArrayList<String> prestamos; 
 
-    // Constructor
     public Miembro(int ID, String nombre) {
         this.ID = ID;
         this.nombre = nombre;
@@ -43,7 +41,7 @@ public class Miembro {
     public void solicitarLibro(String libro, Date fechaP, Date fechaD) {
         this.prestamos.add(libro);
         this.fechaP = fechaP;
-        this.fechaD = fechaD;
+        this.fechaD = fechaD + 30;
     }
 
     public void devolucion(String libro) {
