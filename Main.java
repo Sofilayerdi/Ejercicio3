@@ -9,6 +9,11 @@ public class Main {
         System.out.println("**Bienvenido**");
         System.out.println("Elije la opcion que desees realizar:");
         System.out.println("1. Registrar datos de un libro");
+        System.out.println("2. Solicitar prestamo");
+        System.out.println("3. Devolver libro");
+        System.out.println("4. Agregar sucursal");
+        System.out.println("5. Generar reporte");
+        System.out.println("6. Salir");
         int op1 = scanner.nextInt();
         scanner.nextLine();
 
@@ -32,7 +37,10 @@ public class Main {
                 
 
             case 2:
-
+                System.out.println("Ingresa tu miembro ID: ");
+                int id = scanner.nextInt();
+                System.out.println("Ingresa el ISBN del libro que deseas prestar: ");
+                int libroID = scanner.nextInt();
                 break;
 
             default:
