@@ -1,5 +1,3 @@
-package Ejercicio_3.Ejercicio3;
-
 import java.util.ArrayList;
 import java.util.List;
 
