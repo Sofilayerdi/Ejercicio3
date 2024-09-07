@@ -1,117 +1,102 @@
-import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.util.Scanner;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Main {
-    private int op;
     public static void main(String[] args) {
+        Biblioteca biblioteca = new Biblioteca();
         Scanner scanner = new Scanner(System.in);
+
+        // Agregar algunos libros de ejemplo
+        biblioteca.agregarLibro(new Libro(12345, "Libro A", "Autor A", 2024, "Ficción", 1));
+        biblioteca.agregarLibro(new Libro(67890, "Libro B", "Autor B", 2023, "No Ficción", 1));
+
+        // Agregar algunos miembros de ejemplo
+        Miembro miembro1 = new Miembro(1, "Juan");
+        Miembro miembro2 = new Miembro(2, "Ana");
+        biblioteca.agregarMiembro(miembro1);
+        biblioteca.agregarMiembro(miembro2);
+
         System.out.println("**Bienvenido**");
-        System.out.println("Elije la opcion que desees realizar:");
-        System.out.println("1. Solicitar prestamo");
+        System.out.println("Elije la opción que desees realizar:");
+        System.out.println("1. Solicitar préstamo");
         System.out.println("2. Devolver libro");
         System.out.println("3. Agregar sucursal");
         System.out.println("4. Generar reporte");
         System.out.println("5. Salir");
+
         int op = scanner.nextInt();
         scanner.nextLine();
-        try (BufferedReader reader = new BufferedReader(new FileReader("libros.csv"))) {
-            switch (op) {
-                case 1:
-                    System.out.println("Ingresa tu miembro ID: ");
-                    int id = scanner.nextInt();
-                    scanner.nextLine();  
-                    System.out.println("Ingresa tu nombre: ");
-                    String nombre = scanner.nextLine();
-                    System.out.println("Ingresa la sucursal: ");
-                    int sucursal = scanner.nextInt();
-                    System.out.println("Ingresa el ISBN del libro que deseas prestar: ");
-                    String libroID = scanner.nextLine();
-                    scanner.nextLine(); 
 
-                    Miembro miembro = new Miembro(id, nombre);
-                    String rutaCSV = "libros.csv"; 
+        switch (op) {
+            case 1:
+                System.out.println("Ingresa tu miembro ID: ");
+                int id = scanner.nextInt();
+                scanner.nextLine();  
+                System.out.println("Ingresa la sucursal: ");
+                int sucursal = scanner.nextInt();
+                System.out.println("Ingresa el ISBN del libro que deseas prestar: ");
+                int libroID = scanner.nextInt();
+                scanner.nextLine(); 
 
-                    try {
-                        String nombreLibro = miembro.buscarLibro(sucursal, libroID, rutaCSV);
+                Miembro miembro = biblioteca.getMiembroPorID(id);
+                if (miembro != null) {
+                    LocalDate fechaPrestamo = LocalDate.now();
+                    miembro.solicitarLibro(libroID, fechaPrestamo);
 
-                        if (nombreLibro != null) {
-                            LocalDate fechaPrestamo = LocalDate.now();
-                            miembro.solicitarLibro(libroID, fechaPrestamo);
+                    System.out.println("El préstamo fue realizado exitosamente");
+                    System.out.println("Fecha de préstamo: " + miembro.getFechaP());
+                    System.out.println("Fecha de devolución: " + miembro.getFechaD());
+                } else {
+                    System.out.println("No se encontró el miembro con ID: " + id);
+                }
+                break;
 
-                            System.out.println("El prestamo fue realizado exitosamente");
-                            System.out.println("Libro: " + nombreLibro);
-                            System.out.println("Fecha de prestamo: " + miembro.getFechaP());
-                            System.out.println("Fecha de devolucion: " + miembro.getFechaD());
-                        } else {
-                            System.out.println("No se encontró el libro con ISBN: " + libroID);
-                        }
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Error: El archivo CSV no fue encontrado.");
-                    } catch (IOException e) {
-                        System.out.println("Error: Ocurrió un problema al leer el archivo CSV.");
-                    }
-                    break;
-                        
-                case 2:
-                    System.out.println("Ingresa tu miembro ID: ");
-                    int m_id = scanner.nextInt();
-                    scanner.nextLine();  
-                    System.out.println("Ingresa tu nombre: ");
-                    String m_nombre = scanner.nextLine();
-                    System.out.println("Ingresa la sucursal: ");
-                    int m_sucursal = scanner.nextInt();
-                    System.out.println("Ingresa el ISBN del libro que deseas devolver: ");
-                    String m_libroID = scanner.nextLine();
-                    scanner.nextLine(); 
+            case 2:
+                System.out.println("Ingresa tu miembro ID: ");
+                int m_id = scanner.nextInt();
+                scanner.nextLine();  
+                System.out.println("Ingresa la sucursal: ");
+                int m_sucursal = scanner.nextInt();
+                System.out.println("Ingresa el ISBN del libro que deseas devolver: ");
+                int m_libroID = scanner.nextInt();
+                scanner.nextLine(); 
 
-                    
-                    String d_rutaCSV = "libros.csv"; 
+                Miembro miembroDevolver = biblioteca.getMiembroPorID(m_id);
+                if (miembroDevolver != null) {
+                    miembroDevolver.devolucion(m_libroID);
 
-                    try {
-                        String nombreLibro1 = miembro.buscarLibro(m_sucursal, m_libroID, d_rutaCSV);
+                    System.out.println("La devolución fue realizada exitosamente");
+                } else {
+                    System.out.println("No se encontró el miembro con ID: " + m_id);
+                }
+                break;
 
-                        if (nombreLibro1 != null) {
-                            LocalDate fechaPrestamo = LocalDate.now();
-                            miembro.devolucion(m_libroID);
+            case 3:
+                System.out.println("Ingresa el nombre de la nueva sucursal: ");
+                String name = scanner.nextLine();
+                biblioteca.agregarSucursales(name);
+                System.out.println("La sucursal " + name + " fue añadida con éxito");
+                break;
 
-                            System.out.println("La devolucion fue realizado exitosamente");
-                            System.out.println("Libro: " + nombreLibro1);
-                            
-                        } else {
-                            System.out.println("No se encontró el libro con ISBN: " + libroID);
-                        }
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Error: El archivo CSV no fue encontrado.");
-                    } catch (IOException e) {
-                        System.out.println("Error: Ocurrió un problema al leer el archivo CSV.");
-                    }
-                    break;
+            case 4:
+                System.out.println("Ingresa el mes para el reporte (formato YYYY-MM): ");
+                String fecha = scanner.nextLine();
+                LocalDate mes = LocalDate.parse(fecha + "-01"); // Primer día del mes
+                biblioteca.generarReporte(mes);
+                break;
 
-                case 3:
-                    System.out.println("Ingresa el nombre de la nueva sucursal: ");
-                    String name = scanner.nextLine();
-                    System.out.println("I");
-                    break;
-                
-                case 4:
-                    break;
-                    
-                case 5:
-                    break;
-            
-                default:
-                    System.out.println("Opcion no valida");
-                    break;
-            }
+            case 5:
+                System.out.println("Saliendo...");
+                break;
 
-        
+            default:
+                System.out.println("Opción no válida");
+                break;
+        }
+
+        scanner.close();
     }
-}
 }
