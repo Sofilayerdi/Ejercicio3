@@ -1,5 +1,3 @@
-package Ejercicio_3.Ejercicio3;
-
 public class Libro {
     private int isbn;
     private String titulo;
@@ -33,5 +31,8 @@ public class Libro {
     }
     public int getSucursal(){
         return sucursal;
+    }
+    public String toCSV(){
+        return isbn + "," + titulo + "," + autor + "," + ano + "," + genero + "," + sucursal + "\n"; 
     }
 }
