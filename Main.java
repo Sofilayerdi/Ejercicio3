@@ -19,12 +19,12 @@ public class Main {
         biblioteca.agregarMiembro(miembro2);
 
         System.out.println("**Bienvenido**");
-        System.out.println("Elije la opción que desees realizar:");
         System.out.println("1. Solicitar préstamo");
         System.out.println("2. Devolver libro");
         System.out.println("3. Agregar sucursal");
         System.out.println("4. Generar reporte");
         System.out.println("5. Salir");
+        System.out.println("Elije la opción que desees realizar:");
 
         int op = scanner.nextInt();
         scanner.nextLine();
