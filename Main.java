@@ -9,13 +9,12 @@ public class Main {
         Biblioteca biblioteca = new Biblioteca();
         Scanner scanner = new Scanner(System.in);
 
-        // Agregar algunos libros de ejemplo
-        biblioteca.agregarLibro(new Libro(12345, "Libro A", "Autor A", 2024, "Ficción", 1));
-        biblioteca.agregarLibro(new Libro(67890, "Libro B", "Autor B", 2023, "No Ficción", 1));
+        String rutaCSV = "libros.csv";
+        biblioteca.cargarLibrosDesdeCSV(rutaCSV);
 
-        // Agregar algunos miembros de ejemplo
         Miembro miembro1 = new Miembro(1, "Juan");
         Miembro miembro2 = new Miembro(2, "Ana");
+        
         biblioteca.agregarMiembro(miembro1);
         biblioteca.agregarMiembro(miembro2);
 
@@ -84,7 +83,7 @@ public class Main {
             case 4:
                 System.out.println("Ingresa el mes para el reporte (formato YYYY-MM): ");
                 String fecha = scanner.nextLine();
-                LocalDate mes = LocalDate.parse(fecha + "-01"); // Primer día del mes
+                LocalDate mes = LocalDate.parse(fecha + "-01");
                 biblioteca.generarReporte(mes);
                 break;
 
