@@ -1,18 +1,24 @@
 import java.util.ArrayList;
-import java.util.Date;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDate;
+;
 
 public class Miembro {
     private int ID;
     private String nombre;
-    private Date fechaP; 
-    private Date fechaD; 
-    private ArrayList<String> prestamos; 
+    private LocalDate fechaP; 
+    private LocalDate fechaD; 
+    private ArrayList<String> prestamosActivos; 
+    private ArrayList<String> prestamos;
 
     public Miembro(int ID, String nombre) {
         this.ID = ID;
         this.nombre = nombre;
-        this.fechaP = fechaP;
-        this.fechaD = fechaD;
+        this.fechaP = null;
+        this.fechaD = null;
+        this.prestamosActivos = new ArrayList<>();
         this.prestamos = new ArrayList<>(); 
     }
 
@@ -25,11 +31,11 @@ public class Miembro {
         return nombre;
     }
 
-    public Date getFechaP() {
+    public LocalDate getFechaP() {
         return fechaP;
     }
 
-    public Date getFechaD() {
+    public LocalDate getFechaD() {
         return fechaD;
     }
 
@@ -37,17 +43,51 @@ public class Miembro {
         return prestamos;
     }
 
-
-    public void solicitarLibro(String libro, Date fechaP, Date fechaD) {
-        this.prestamos.add(libro);
-        this.fechaP = fechaP;
-        this.fechaD = fechaD + 30;
+    public ArrayList<String> getPrestamosActivos() {
+        return prestamosActivos;
     }
 
-    public void devolucion(String libro) {
-        if (this.prestamos.contains(libro)) {
-            this.prestamos.remove(libro);
+
+    public void solicitarLibro(String libroID, LocalDate fechaP) {
+        this.prestamos.add(libroID);
+        this.prestamosActivos.add(libroID);
+        this.fechaP = fechaP;
+        this.fechaD = fechaP.plusDays(30);
+
+    }
+
+    public void devolucion(String libroID) {
+        if (this.prestamosActivos.contains(libroID)) {
+            this.prestamosActivos.remove(libroID);
         }
 
+    }
+
+    public String buscarLibro(int sucursal, String libroID, String rutaCSV) {
+        String nombreLibro = null;
+        boolean found = false;
+
+            BufferedReader reader = new BufferedReader(new FileReader(rutaCSV));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                String b_sucursal = parts[5]; 
+
+                if (b_sucursal.equals(sucursal)) {
+                    String isbn = parts[0];
+                    if(isbn.equals(libroID)){
+                        found = true;
+                        nombreLibro = parts[1]; 
+                        break;
+                    }
+                }
+            }
+
+        if (found) {
+            return nombreLibro;
+        } else {
+            return null;
+        }
     }
 }
