@@ -1,5 +1,3 @@
-package Ejercicio_3.Ejercicio3;
-
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
